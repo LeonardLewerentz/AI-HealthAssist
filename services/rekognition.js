@@ -1,4 +1,4 @@
-import AWS from 'aws-sdk';
+import AWS from 'aws-sdk/dist/aws-sdk-react-native';
 
 AWS.config.update({ region: 'us-east-1' });
 
