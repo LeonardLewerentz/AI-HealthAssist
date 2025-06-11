@@ -8,6 +8,9 @@ export default function RootLayout() {
       <Stack.Screen name="index" options={{ headerShown: false }} />
       {/* Example: If you want to customize the "voice-input" route header */}
       <Stack.Screen name="voice-input" options={{ title: "Voice Transcription" }} />
+      <Stack.Screen name="camera" options={{ title: "Camera" }} />
+      <Stack.Screen name="summary" options={{ title: "Summary" }} />
+
       {/* ... and so on for other screens */}
     </Stack>
   );
