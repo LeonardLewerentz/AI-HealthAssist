@@ -3,13 +3,10 @@ import { Text, View, Button, StyleSheet } from 'react-native';
 
 export default function HomeScreen({ navigation }) {
   return (
-    <View style={styles.container}>
+    <View style={{ flex: 1, alignItems: 'center', padding: 20 }}>
       <Text>Example</Text>
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: 'center', gap: 20, padding: 20 },
-});
 
