@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { View, Button, Image } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-import { analyzeSkinCondition } from './services/rekognition';
 
 export default function CameraScreen() {
   const [image, setImage] = useState(null);

@@ -1,4 +1,4 @@
-import { View, Text, Button, StyleSheet } from 'react-native';
+import { View, Text, Button, StyleSheet, TextInput, ActivityIndicator, ScrollView, Alert } from 'react-native';
 import { router } from 'expo-router'; // Import router for navigation
 
 export default function HomeScreen() {
