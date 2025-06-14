@@ -6,16 +6,12 @@ export default function HomeScreen() {
     <View style={styles.container}>
       <Text>Home Screen</Text>
       <Button
-        title="Go to Camera"
-        onPress={() => router.push('/camera')} // Navigate using expo-router's router
+        title="Go to Patient Sign In"
+        onPress={() => router.push('/login')} // Assuming `voice-input.jsx`
       />
       <Button
-        title="Go to Voice Input"
-        onPress={() => router.push('/voice-input')} // Assuming `voice-input.jsx`
-      />
-      <Button
-        title="Go to Summary"
-        onPress={() => router.push('/summary')} // Assuming `voice-input.jsx`
+        title="Go to Patient Sign Up"
+        onPress={() => router.push('/signup')} // Assuming `voice-input.jsx`
       />
       {/* Add other buttons as needed */}
     </View>

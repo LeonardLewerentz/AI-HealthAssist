@@ -13,9 +13,12 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home">
         <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="Camera" component={CameraScreen} />
         <Stack.Screen name="Voice Input" component={TranscribeScreen} />
-        <Stack.Screen name="Summary" component={SummaryScreen} />
+        <Stack.Screen 
+          name="SummaryResult" 
+          component={SummaryResultScreen} 
+          options={{ title: 'Summary Result' }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
