@@ -72,23 +72,29 @@ const setItem = async (key, value) => {
 
 const getItem = async (key) => {
   if (Platform.OS === 'web') {
-    return sessionStorage.getItem(key);
+    sessionStorage.setItem("dummy", "dummy");
+    const value = sessionStorage.getItem(key);
+    return value !== null ? value : null; // Return null if no item is found
   } else {
     const ss = await getSecureStore();
     if (ss) {
       try {
-        return await ss.getItemAsync(key);
+        const value = await ss.getItemAsync(key);
+        return value !== null ? value : null; // Return null if no item is found
       } catch (error) {
         console.error(`SecureStore.getItemAsync failed for key "${key}":`, error);
         console.warn("Falling back to AsyncStorage for mobile token retrieval due to SecureStore error.");
-        return await AsyncStorage.getItem(key);
+        const fallbackValue = await AsyncStorage.getItem(key);
+        return fallbackValue !== null ? fallbackValue : null; // Return null if no item is found
       }
     } else {
       console.warn("SecureStore not available, falling back to AsyncStorage for mobile token retrieval.");
-      return await AsyncStorage.getItem(key);
+      const fallbackValue = await AsyncStorage.getItem(key);
+      return fallbackValue !== null ? fallbackValue : null; // Return null if no item is found
     }
   }
 };
+
 
 const removeItem = async (key) => {
   if (Platform.OS === 'web') {

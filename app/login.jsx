@@ -31,7 +31,7 @@ const LoginScreen = () => {
       console.log('Token stored:', token);
 
       // Now you can use this token for authenticated requests
-      router.push("/voice-input");
+      router.push("/");
     } catch (error) {
       console.error('Login failed:', error);
       Alert.alert("Login Error", "An error occurred during login. Please try again later.");
