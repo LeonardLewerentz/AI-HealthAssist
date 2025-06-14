@@ -24,10 +24,11 @@ const LoginScreen = () => {
         return; // Stop execution if login failed
       }
 
-      const { token } = await response.json();
+      const { token, isDoctor } = await response.json();
 
       // Fix: Use SecureStore.setItemAsync instead of setValueWithKeyAsync
       await Storage.setItem('user_token', token);
+      await Storage.setItem('is_doctor', isDoctor)
       console.log('Token stored:', token);
 
       // Now you can use this token for authenticated requests

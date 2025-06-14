@@ -11,6 +11,10 @@ export default function RootLayout() {
       <Stack.Screen name="summary-result" options={{ title: "AI Summary" }} />
       <Stack.Screen name="submit-form" options={{ title: "Submit Form" }} />
       <Stack.Screen name="success-screen" options={{ title: "Success" }} />
+      <Stack.Screen name="doctor-dashboard" options={{ title: "Doctor's Dashboard" }} />
+      <Stack.Screen name="login" options={{ title: "Login" }} />
+      <Stack.Screen name="signup" options={{ title: "Signup" }} />
+
 
       {/* ... and so on for other screens */}
     </Stack>
