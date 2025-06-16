@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
+import { View, Text, Button, StyleSheet, Image } from 'react-native';
 import { router } from 'expo-router'; // Import router for navigation
 import Storage from './utils/storage.js';
 
@@ -22,7 +22,10 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.container}>
-      <Text>Home Screen</Text>
+      <Image 
+        source={require('../assets/images/AIHealthAssist.png')} 
+        style={{ width: 200, height: 200 }}
+      />
       {!loggedIn && (
         <>
           <Button
