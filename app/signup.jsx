@@ -1,8 +1,8 @@
-// React Native Frontend (App.js)
 import DatePicker from 'react-date-picker';
 import { useState } from 'react';
 import { Button, TextInput, View, Modal, Text, Alert, Platform } from 'react-native';
 import { router } from 'expo-router'; // Import router for navigation
+import * as DocumentPicker from 'expo-document-picker'; // Import Expo DocumentPicker
 
 const SignupScreen = () => {
   const [email, setEmail] = useState('');
@@ -12,9 +12,16 @@ const SignupScreen = () => {
   const [password, setPassword] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
+  const [file, setFile] = useState(null); // State to hold the selected file
 
   const validateFields = () => {
-    if (!email || !name || !address || !password || !dob) {
+    console.log('Current file state:', file); // Verify file exists
+    if (!file) {
+      showAlertOrModal('No file selected');
+      return false;
+    }
+
+    if (!email || !name || !address || !password || !dob || !file) {
       const message = 'All fields must be filled out.';
       showAlertOrModal(message);
       return false;
@@ -57,7 +64,42 @@ const SignupScreen = () => {
       Alert.alert('Validation Error', message);
     }
   };
+ 
+  const handleFileUpload = async () => {
+    try {
+      console.log('Starting file picker...');
+      const result = await DocumentPicker.getDocumentAsync({
+        type: '*/*',
+        copyToCacheDirectory: false
+      });
+      console.log('Picker result:', result);
 
+        console.log('Success result assets:', result.assets);
+        
+        if (result.assets?.length > 0) {
+        const asset = result.assets[0];
+        console.log('Asset details:', asset);
+
+        // Web-specific handling
+        if (Platform.OS === 'web' && asset.uri.startsWith('data:')) {
+          console.log('Processing web file...');
+          const response = await fetch(asset.uri);
+          asset.file = await response.blob();
+          asset.name = asset.name || `file-${Date.now()}`;
+          console.log('Processed web file:', asset);
+        }
+
+        setFile(asset);
+        console.log('File state should update now');
+      } else {
+        console.warn('Empty assets array');
+      }
+    } catch (error) {
+      console.error('File picker error:', error);
+    }
+  };
+
+ 
   const handleLogin = async () => {
     if (!validateFields()) {
       return; // Stop if validation fails
@@ -67,12 +109,12 @@ const SignupScreen = () => {
       const response = await fetch('http://localhost:3000/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password, dob, address, name }),
+        body: JSON.stringify({ email, password, dob, address, name, file:file.uri }),
       });
       if (response.ok) {
         router.push("/");
       } else if (response.status === 409) {
-        showAlertOrModal('User already exists.')
+        showAlertOrModal('User already exists.');
       } else {
         showAlertOrModal('Signup failed. Please try again later.');
       }
@@ -89,6 +131,11 @@ const SignupScreen = () => {
       <TextInput placeholder="Address" onChangeText={setAddress} style={{ marginBottom: 10 }} />
       <TextInput placeholder="Password" secureTextEntry onChangeText={setPassword} style={{ marginBottom: 10 }} />
       <DatePicker onChange={setDob} value={dob} />
+      
+      {/* Button to upload a file */}
+      <Button title="Upload File" onPress={handleFileUpload} />
+      {file && <Text style={{ marginVertical: 10 }}>Selected File: {file.name}</Text>}
+
       <Button title="Signup" onPress={handleLogin} />
 
       {/* Modal for validation messages */}
@@ -112,6 +159,4 @@ const SignupScreen = () => {
 };
 
 export default SignupScreen;
-
-
 
