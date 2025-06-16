@@ -1,3 +1,5 @@
+
+
 import React, { useEffect, useState } from 'react';
 import { View, Text, Button, StyleSheet, Image } from 'react-native';
 import { router } from 'expo-router'; // Import router for navigation
@@ -19,38 +21,51 @@ export default function HomeScreen() {
 
     checkLoginStatus(); // Call the function to check login status
   }, []); // Empty dependency array to run once on mount
-
   return (
     <View style={styles.container}>
-      <Image 
-        source={require('../assets/images/AIHealthAssist.png')} 
-        style={{ width: 200, height: 200 }}
-      />
-      {!loggedIn && (
-        <>
-          <Button
-            title="Go to Sign In"
-            onPress={() => router.push('/login')} // Assuming `voice-input.jsx`
-          />
-          <Button
-            title="Go to Patient Sign Up"
-            onPress={() => router.push('/signup')} // Assuming `voice-input.jsx`
-          />
-        </>
-      )}
-      {loggedIn && (
-        <Button
-          title="Go to Symptom Input"
-          onPress={() => router.push('/voice-input')} // Assuming `voice-input.jsx`
+      {/* Logo Container */}
+      <View style={styles.logoContainer}>
+        <Image 
+          source={require('../assets/images/AIHealthAssist.png')} 
+          style={styles.logo}
         />
-      )}
-      {isDoctor && ( // Conditionally render the button for doctors
-        <Button
-          title="Go to Doctor Dashboard"
-          onPress={() => router.push('/doctor-dashboard')} // Assuming a doctor dashboard route
-        />
-      )}
-      {/* Add other buttons as needed */}
+      </View>
+
+      {/* Buttons Container */}
+      <View style={styles.buttonContainer}>
+        {!loggedIn && (
+          <>
+            <View style={styles.buttonWrapper}>
+              <Button
+                title="Go to Sign In"
+                onPress={() => router.push('/login')}
+              />
+            </View>
+            <View style={styles.buttonWrapper}>
+              <Button
+                title="Go to Patient Sign Up"
+                onPress={() => router.push('/signup')}
+              />
+            </View>
+          </>
+        )}
+        {loggedIn && (
+          <View style={styles.buttonWrapper}>
+            <Button
+              title="Go to Symptom Input"
+              onPress={() => router.push('/voice-input')}
+            />
+          </View>
+        )}
+        {isDoctor && (
+          <View style={styles.buttonWrapper}>
+            <Button
+              title="Go to Doctor Dashboard"
+              onPress={() => router.push('/doctor-dashboard')}
+            />
+          </View>
+        )}
+      </View>
     </View>
   );
 }
@@ -58,10 +73,30 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    justifyContent: 'flex-start',
+  },
+  logoContainer: {
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    width: '100%',
+  },
+  logo: {
+    width: 200,
+    height: 200,
+    marginTop: 50, // Adjust this value as needed
+  },
+  buttonContainer: {
+    flex: 2,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    paddingHorizontal: 20,
+  },
+  buttonWrapper: {
+    width: '80%',
+    marginVertical: 10,
   },
 });
-
 
 
