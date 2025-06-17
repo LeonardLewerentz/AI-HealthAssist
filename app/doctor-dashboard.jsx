@@ -7,6 +7,7 @@ const CaseList = () => {
   const [expandedId, setExpandedId] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [imageUris, setImageUris] = useState({}); // State to hold image URIs
 
   useEffect(() => {
     const fetchCases = async () => {
@@ -18,7 +19,7 @@ const CaseList = () => {
           return;
         }
 
-        const response = await fetch('http://localhost:3000/listsubmissions', {
+        const response = await fetch('https://api.aihealthassist.leonardlewerentz.com/listsubmissions', {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -47,6 +48,34 @@ const CaseList = () => {
     fetchCases();
   }, []);
 
+  const fetchImage = async (patientId) => {
+    try {
+      const token = await Storage.getItem('user_token');
+      const response = await fetch(`https://api.aihealthassist.leonardlewerentz.com/download?userid=${patientId}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch image');
+      }
+
+      const blob = await response.blob();
+      const base64Image = URL.createObjectURL(blob);
+      setImageUris((prev) => ({ ...prev, [patientId]: base64Image }));
+    } catch (error) {
+      console.error('Error fetching image:', error);
+    }
+  };
+
+  const handlePress = (caseItem) => {
+    setExpandedId(expandedId === caseItem.id ? null : caseItem.id);
+    if (expandedId !== caseItem.id) {
+      fetchImage(caseItem.patientId); // Fetch image when expanding
+    }
+  };
+
   if (loading) return <Text>Loading...</Text>;
   if (error) return <Text style={styles.error}>{error}</Text>;
 
@@ -55,7 +84,7 @@ const CaseList = () => {
       {cases.map((caseItem) => (
         <Pressable 
           key={caseItem.id} 
-          onPress={() => setExpandedId(expandedId === caseItem.id ? null : caseItem.id)}
+          onPress={() => handlePress(caseItem)}
           style={styles.card}
         >
           <Text style={styles.title}>{caseItem.patientName}</Text>
@@ -67,10 +96,14 @@ const CaseList = () => {
               <Text>AI Summary: {caseItem.aiSummary}</Text>
               <Text>Created: {new Date(caseItem.createdAt).toLocaleString()}</Text>
               <Text>Updated: {new Date(caseItem.updatedAt).toLocaleString()}</Text>
-              <Image 
-                source={{ uri: `http://localhost:3000/download?userid=${caseItem.patientId}` }} 
-                style={{ width: 200, height: 200 }}
-              />
+              {imageUris[caseItem.patientId] ? (
+                <Image 
+                  source={{ uri: imageUris[caseItem.patientId] }} 
+                  style={{ width: 200, height: 200 }}
+                />
+              ) : (
+                <Text>Loading image...</Text>
+              )}
             </View>
           )}
         </Pressable>
@@ -110,4 +143,5 @@ const styles = StyleSheet.create({
 });
 
 export default CaseList;
+
 

@@ -36,7 +36,7 @@ async function callBackendForSummary(text, modelId, region = 'us-east-1') {
       'Authorization': `Bearer ${token}`, // Add the JWT token here
     };
 
-    const response = await fetch(`http://localhost:3000/summarize`, {
+    const response = await fetch(`https://api.aihealthassist.leonardlewerentz.com/summarize`, {
       // IMPORTANT: Adjust this URL to your backend server's actual IP/domain in production!
       // For development on a physical device, `localhost` will refer to the device itself.
       // Use your computer's local IP address (e.g., 'http://192.168.1.XX:3000') or ngrok.

@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { Audio } from 'expo-av'; // Corrected import
 
-const BACKEND_TRANSCRIBE_URL = 'http://localhost:3000/transcribe';
+const BACKEND_TRANSCRIBE_URL = 'https://api.aihealthassist.leonardlewerentz.com/transcribe';
 
 const SpeechToTextComponent = ({ onTranscriptionComplete, onTranscriptionError }) => {
   const [recording, setRecording] = useState(null);

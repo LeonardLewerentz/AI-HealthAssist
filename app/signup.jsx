@@ -1,6 +1,6 @@
 import DatePicker from 'react-date-picker';
 import { useState } from 'react';
-import { Button, TextInput, View, Modal, Text, Alert, Platform } from 'react-native';
+import { StyleSheet, Button, TextInput, View, Modal, Text, Alert, Platform } from 'react-native';
 import { router } from 'expo-router'; // Import router for navigation
 import * as DocumentPicker from 'expo-document-picker'; // Import Expo DocumentPicker
 
@@ -56,7 +56,37 @@ const SignupScreen = () => {
     return true;
   };
 
-  const showAlertOrModal = (message) => {
+  
+  // Add these styles:
+  const styles = StyleSheet.create({
+    dateContainer: {
+      marginBottom: 20,
+      zIndex: 1, // Ensures date picker appears above other elements
+    },
+    datePicker: {
+      width: '100%',
+      minWidth: 300,
+      borderWidth: 1,
+      borderColor: '#ccc',
+      borderRadius: 8,
+      padding: Platform.select({
+        ios: 14,
+        android: 10,
+        default: 12
+      }),
+      backgroundColor: '#fff',
+      height: Platform.select({
+        ios: 44,
+        default: 40
+      }),
+    },
+    // Add to your existing button styles
+    buttonContainer: {
+      marginTop: 20,
+      gap: 12,
+    }
+  });
+    const showAlertOrModal = (message) => {
     if (Platform.OS === 'web') {
       setModalMessage(message);
       setModalVisible(true);
@@ -106,7 +136,7 @@ const SignupScreen = () => {
     }
 
     try {
-      const response = await fetch('http://localhost:3000/signup', {
+      const response = await fetch('https://api.aihealthassist.leonardlewerentz.com/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password, dob, address, name, file:file.uri }),
@@ -130,14 +160,25 @@ const SignupScreen = () => {
       <TextInput placeholder="Name" onChangeText={setName} style={{ marginBottom: 10 }} />
       <TextInput placeholder="Address" onChangeText={setAddress} style={{ marginBottom: 10 }} />
       <TextInput placeholder="Password" secureTextEntry onChangeText={setPassword} style={{ marginBottom: 10 }} />
-      <DatePicker onChange={setDob} value={dob} />
-      
-      {/* Button to upload a file */}
-      <Button title="Upload File" onPress={handleFileUpload} />
-      {file && <Text style={{ marginVertical: 10 }}>Selected File: {file.name}</Text>}
+      <View style={styles.dateContainer}>
+        <DatePicker
+          onChange={setDob}
+          value={dob}
+          style={styles.datePicker}
+          calendarIconColor="#007AFF"
+          clearIconColor="#FF3B30"
+          format="yyyy-MM-dd"
+          minDate={new Date(1900, 0, 1)}
+          maxDate={new Date()}
+       />
+      </View>
+      <View style={styles.buttonContainer}> 
+        {/* Button to upload a file */}
+        <Button title="Upload File" onPress={handleFileUpload} />
+        {file && <Text style={{ marginVertical: 10 }}>Selected File: {file.name}</Text>}
 
-      <Button title="Signup" onPress={handleLogin} />
-
+        <Button title="Signup" onPress={handleLogin} />
+      </View>
       {/* Modal for validation messages */}
       <Modal
         animationType="slide"

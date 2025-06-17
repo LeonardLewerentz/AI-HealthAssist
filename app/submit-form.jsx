@@ -32,7 +32,7 @@ const LoginScreen = () => {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`, // Add the JWT token here
       };
-      const response = await fetch('http://localhost:3000/submitform', {
+      const response = await fetch('https://api.aihealthassist.leonardlewerentz.com/submitform', {
         method: 'POST',
         headers: headers,
         body: JSON.stringify({ aiSummary }),
